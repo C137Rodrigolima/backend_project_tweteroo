@@ -17,8 +17,13 @@ console.log("OK");
 
 server.post("/sign-up", (req, res) => {
     const account = req.body;
+
+    if(Object.keys(account).length < 2 || account.tweet.length === 0 || account.username.length === 0){
+        res.status(400).send("Todos os campos são obrigatórios!");
+    } else {
     accounts.push(account);
     res.send("OK");
+    }
 });
 
 server.get("/tweets", (req, res) => {
@@ -27,8 +32,22 @@ server.get("/tweets", (req, res) => {
 
 server.post("/tweets", (req, res) => {
     let tweet = req.body;
+    console.log(tweet);
 
-    tweet.avatar = accounts[0].avatar;
+    if(Object.keys(tweet).length < 2 || tweet.tweet.length === 0 || tweet.username.length === 0){
+        res.status(400).send("Todos os campos são obrigatórios!");
+    } else {
+        refatoringTweets();
+
+        tweet.avatar = accounts[0].avatar;
+        tweets.push(tweet);
+        res.send("OK");
+    }
+});
+
+server.listen(5000);
+
+function refatoringTweets(){
     if(tweets.length>9){
         let newArray = [];
         for(let i=0; i<tweets.length; i++){
@@ -38,9 +57,4 @@ server.post("/tweets", (req, res) => {
         }
         tweets = newArray;
     }
-
-    tweets.push(tweet);
-    res.send("OK");
-});
-
-server.listen(5000);
+}
