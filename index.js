@@ -18,21 +18,20 @@ console.log("OK");
 server.post("/sign-up", (req, res) => {
     const account = req.body;
 
-    if(Object.keys(account).length < 2 || account.tweet.length === 0 || account.username.length === 0){
+    if(Object.keys(account).length < 2 || account.avatar.length === 0 || account.username.length === 0){
         res.status(400).send("Todos os campos são obrigatórios!");
     } else {
     accounts.push(account);
-    res.send("OK");
+    res.status(201).send("OK");
     }
 });
 
-server.get("/tweets", (req, res) => {
+server.get("/tweets", (_, res) => {
     res.send(tweets);
 });
 
 server.post("/tweets", (req, res) => {
     let tweet = req.body;
-    console.log(tweet);
 
     if(Object.keys(tweet).length < 2 || tweet.tweet.length === 0 || tweet.username.length === 0){
         res.status(400).send("Todos os campos são obrigatórios!");
@@ -41,7 +40,7 @@ server.post("/tweets", (req, res) => {
 
         tweet.avatar = accounts[0].avatar;
         tweets.push(tweet);
-        res.send("OK");
+        res.status(201).send("OK");
     }
 });
 
